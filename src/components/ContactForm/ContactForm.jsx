@@ -4,20 +4,20 @@ import css from 'components/ContactForm/ContactForm.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { phonebookSelector } from "redux/selectors";
 import { nanoid } from 'nanoid';
-import { addContact } from "redux/phonebookSlice";
+// import { addContact } from "redux/phonebookSlice";
 
 export const ContactForm = () => {
-   const { contacts } = useSelector(phonebookSelector);
+   const { items } = useSelector(phonebookSelector);
    const dispatch = useDispatch();
    
    const handleFormSubmit = (e) => {
       e.preventDefault();
       const newContact = {
-         name: e.currentTarget.elements.name.value,
-         number: e.currentTarget.elements.number.value,
          id: nanoid(),
+         name: e.currentTarget.elements.name.value,
+         number: e.currentTarget.elements.number.value,         
       };
-       const filteredContact = contacts.filter(contact =>
+       const filteredContact = items.filter(contact =>
           contact.name.toLowerCase() === newContact.name.toLowerCase()).length;
     
       if (filteredContact) {
