@@ -1,13 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import {  persistReducer } from 'redux-persist'
-// import storage from 'redux-persist/lib/storage'
-import {fetchContactsThunk} from '../search/thunks'
-
-// const persistConfig = {
-//    key: 'persistPhonebook',
-//    storage,
-//    whitelist: ['contacts'],
-// };
+import { fetchContactsThunk, addContactThunk, deleteContactThunk } from '../search/thunks'
 
 const initialState = {
    contacts:  {
@@ -23,10 +15,20 @@ const handlePendingContacts = (state) => {
 }
 
 const handleFulfilledContacts = (state, { payload }) => {
-	state.contacts.isLoading = false
+   state.contacts.isLoading = false
    state.contacts.items = payload
-   console.log(payload)
 }
+
+const handleFulfilledAddContact = (state, { payload }) => {
+   state.contacts.isLoading = false
+   state.contacts.items = [...state.contacts.items, payload]
+}
+   
+const handleFulfilledDeleteContact = (state, { payload }) => {
+   state.contacts.isLoading = false
+   state.contacts.items = state.contacts.items.filter(contact => contact.id !== payload.id)
+}
+
 const handleRejectedContacts = (state, { payload }) => {
 	state.contacts.isLoading = false
 	state.contacts.error = payload
@@ -44,28 +46,15 @@ export const phonebookSlice = createSlice({
 		builder
          .addCase(fetchContactsThunk.pending, handlePendingContacts)
          .addCase(fetchContactsThunk.fulfilled, handleFulfilledContacts)
-			.addCase(fetchContactsThunk.rejected, handleRejectedContacts)
+         .addCase(fetchContactsThunk.rejected, handleRejectedContacts)
+         .addCase(addContactThunk.pending, handlePendingContacts)
+         .addCase(addContactThunk.fulfilled, handleFulfilledAddContact)
+         .addCase(addContactThunk.rejected, handleRejectedContacts)
+         .addCase(deleteContactThunk.pending, handlePendingContacts)
+         .addCase(deleteContactThunk.fulfilled, handleFulfilledDeleteContact)
+         .addCase(deleteContactThunk.rejected, handleRejectedContacts)
    },   
 });
 
 export const contactsReducer = phonebookSlice.reducer
-export const { addContact, filterContacts, deleteContact } = phonebookSlice.actions;
-
-
-// export const phonebookSlice = createSlice({
-//    name: 'phonebook',
-//    initialState,
-//    reducers: {
-//       addContact: (state, { payload }) => {
-//          state.contacts.push(payload)
-//       },
-//       filterContacts: (state, { payload }) => {
-//          state.filter = payload
-//       },
-//       deleteContact: (state, { payload }) => {
-//          state.contacts = state.contacts.filter(contact => contact.id !== payload)
-//       }
-//    },   
-// });
-
-// export const persistedPhonebookReducer = persistReducer(persistConfig, phonebookSlice.reducer);
+export const { filterContacts } = phonebookSlice.actions;

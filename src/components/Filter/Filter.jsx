@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { phonebookFilter } from "redux/selectors";
 import { filterContacts } from "redux/phonebookSlice";
 
-
 export const Filter = () => {
    const filter = useSelector(phonebookFilter);
    const dispatch = useDispatch();

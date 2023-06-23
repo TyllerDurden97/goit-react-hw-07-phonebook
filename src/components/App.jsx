@@ -2,6 +2,8 @@ import { React } from "react";
 import { Filter } from 'components/Filter/Filter';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import css from 'components/App.module.css';
 
 export const App = () => {
@@ -16,6 +18,18 @@ export const App = () => {
             <Filter
             />
             <ContactList
+            />
+            <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable={false}
+            pauseOnHover
+            theme="colored"
             />
          </div>
       </div>

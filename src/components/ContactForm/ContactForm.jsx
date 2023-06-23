@@ -3,8 +3,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import css from 'components/ContactForm/ContactForm.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { phonebookSelector } from "redux/selectors";
-import { nanoid } from 'nanoid';
-// import { addContact } from "redux/phonebookSlice";
+import { addContactThunk } from "search/thunks";
 
 export const ContactForm = () => {
    const { items } = useSelector(phonebookSelector);
@@ -13,7 +12,6 @@ export const ContactForm = () => {
    const handleFormSubmit = (e) => {
       e.preventDefault();
       const newContact = {
-         id: nanoid(),
          name: e.currentTarget.elements.name.value,
          number: e.currentTarget.elements.number.value,         
       };
@@ -23,7 +21,7 @@ export const ContactForm = () => {
       if (filteredContact) {
          return Notify.info(`${newContact.name} is already in Contacts`)
       } else {
-         dispatch(addContact(newContact));
+         dispatch(addContactThunk(newContact));
          e.currentTarget.reset();
       };
    };
